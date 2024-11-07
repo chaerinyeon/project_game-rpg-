@@ -1,4 +1,4 @@
-# Battle RPG Game Programing
+# RPG Game Programing
 Yeonchaerin
 
 ## Table of contents
