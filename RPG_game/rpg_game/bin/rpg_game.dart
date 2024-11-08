@@ -17,12 +17,12 @@ class Character {
     print('$name 이/가 ${monster.name}에게 $damage 의 데미지를 입혔습니다.');
   }
 
-  void defend() {
-    int regainedHealth = (health * 0.1).round(); // Regain 10% of current health
-    health += regainedHealth;
-    print('$name 이/가 방어태세를 취하여 $regainedHealth 만큼 체력을 얻었습니다.');
-  }
-
+void defend(Monster monster) {
+  int damage = max(0, monster.attack - defense); 
+  health += damage; 
+  print('$name 이/가 방어태세를 취하여 $damage 만큼 체력을 얻었습니다.');
+}
+  
   void showStatus() {
     print('$name - 체력: $health, 공격력: $attack, 방어력: $defense');
   }
@@ -62,23 +62,21 @@ String getCharacterName() {
 
 class Game {
   Character? character;
-  List<Monster> monsterList =
-      []; // Properly initialize as an empty list to avoid null issues
+  List<Monster> monsterList =[];
   int monsterDefeated = 0;
 
   Future<void> startGame() async {
     try {
-      character = await loadCharacterStatus(); // Assign the character instance
+      character = await loadCharacterStatus(); 
       if (character == null) {
         print("게임을 시작할 수 없습니다. 캐릭터 데이터를 불러오지 못했습니다.");
-        return; // Exit the startGame method if character is null
+        return; 
       }
 
-      monsterList = await loadMonsterStatus(); // Assign the monster list
+      monsterList = await loadMonsterStatus();
       if (monsterList.isEmpty) {
         print("게임을 시작할 수 없습니다. 몬스터 데이터가 없습니다.");
-        return; // Exit the startGame method if monster list is empty
-      }
+        return;       }
 
       print('게임을 시작합니다!');
 
@@ -101,7 +99,7 @@ class Game {
           if (input == null || input.toLowerCase() != 'y') {
             print('게임을 종료하겠습니다.');
             saveResult('중도 종료');
-            return; // Explicitly exit the game if the player chooses to quit
+            return; 
           } else {
             print('새로운 몬스터와 대결합니다!');
           }
@@ -137,10 +135,10 @@ class Game {
       String name = getCharacterName();
       Character character = Character(name, health, attack, defense);
       print('캐릭터 상태가 성공적으로 불러와졌습니다.');
-      return character; // Properly returning the character instance
+      return character; 
     } catch (e) {
       print('캐릭터 데이터를 불러오는 데 실패했습니다: $e');
-      return null; // Return null if loading fails
+      return null; 
     }
   }
 
@@ -177,7 +175,7 @@ class Game {
       return monsters;
     } catch (e) {
       print('몬스터 데이터를 불러오는 데 실패했습니다: $e');
-      return []; // Return an empty list if loading fails
+      return [];
     }
   }
 
